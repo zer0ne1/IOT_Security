@@ -133,6 +133,7 @@ module.exports = function(grunt) {
                 src: [
                     // Ensure editor source files are concatenated in
                     // the right order
+                 
                     "packages/node_modules/@node-red/editor-client/src/js/polyfills.js",
                     "packages/node_modules/@node-red/editor-client/src/js/jquery-addons.js",
                     "packages/node_modules/@node-red/editor-client/src/js/red.js",
@@ -141,6 +142,7 @@ module.exports = function(grunt) {
                     "packages/node_modules/@node-red/editor-client/src/js/i18n.js",
                     "packages/node_modules/@node-red/editor-client/src/js/settings.js",
                     "packages/node_modules/@node-red/editor-client/src/js/user.js",
+                    "packages/node_modules/@node-red/editor-client/src/js/demo.js",
                     "packages/node_modules/@node-red/editor-client/src/js/comms.js",
                     "packages/node_modules/@node-red/editor-client/src/js/runtime.js",
                     "packages/node_modules/@node-red/editor-client/src/js/text/bidi.js",
