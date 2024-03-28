@@ -379,6 +379,18 @@ module.exports = function(grunt) {
             build: {
                 files:[
                     {
+                        src: 'packages/node_modules/@node-red/editor-client/src/js/manager.html', // Đường dẫn đến file bạn muốn copy
+                        dest: 'packages/node_modules/@node-red/editor-client/public/manager.html',
+                    },
+                    {
+                        src: 'packages/node_modules/@node-red/editor-client/src/js/script.js', // Đường dẫn đến file bạn muốn copy
+                        dest: 'packages/node_modules/@node-red/editor-client/public/script.js',
+                    },
+                    {
+                        src: 'packages/node_modules/@node-red/editor-client/src/js/styles.css', // Đường dẫn đến file bạn muốn copy
+                        dest: 'packages/node_modules/@node-red/editor-client/public/styles.css',
+                    },
+                    {
                         src: 'packages/node_modules/@node-red/editor-client/src/js/main.js',
                         dest: 'packages/node_modules/@node-red/editor-client/public/red/main.js'
                     },
