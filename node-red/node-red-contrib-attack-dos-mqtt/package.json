@@ -1,0 +1,8 @@
+{
+    "name" : "node-red-contrib-attack-dos-mqtt",
+    "node-red" : {
+        "nodes": {
+            "detect-XSS": "attack-dos-mqtt.js"
+        }
+    }
+}
