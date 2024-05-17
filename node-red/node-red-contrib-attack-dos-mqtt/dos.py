@@ -62,7 +62,6 @@ def main(request):
             vett[i-1].connect(_broker_address, _port, _keepAlive)  # Yêu cầu kết nối tới broker
 
         print('\nRequests sent !\n')
-
         print('[ Attack terminated ]\n')
 
     except KeyboardInterrupt:

@@ -1,0 +1,8 @@
+{
+    "name" : "node-red-contrib-attack-spoofing-iot",
+    "node-red" : {
+        "nodes": {
+            "spoofing-IOT": "spoofing-iot.js"
+        }
+    }
+}
