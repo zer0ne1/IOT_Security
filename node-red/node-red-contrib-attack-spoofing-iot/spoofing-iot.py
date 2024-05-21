@@ -2,6 +2,7 @@ import sys
 from scapy.all import *
 import re
 import paho.mqtt.client as mqtt
+import json
 
 # Thiết lập cấu hình để sử dụng Npcap
 conf.use_pcap = True
@@ -10,8 +11,19 @@ conf.use_npcap = True
 # Tạo một client MQTT với tên "Subscriber"
 # Hàm để giải mã dữ liệu raw của gói tin MQTT
 
+def process_json_input(json_string):
+    try:
+        # Phân tích chuỗi JSON thành một đối tượng Python
+        data = json.loads(json_string)
+        # Trả về đối tượng đã được phân tích
+        return data
+    except json.JSONDecodeError as e:
+        # Xử lý trường hợp nếu chuỗi JSON không hợp lệ
+        print("Invalid JSON format:", e)
+        sys.stdout.flush()
+        return None
 
-def All(run):
+def All(ip, port):
     def filter_mqtt(pkt):
         if pkt.haslayer(Raw):
             raw_data = pkt[Raw].load
@@ -84,7 +96,7 @@ def All(run):
         client.on_connect = on_connect
         client.on_message = on_message
         client.username_pw_set(Username, Password)  # Thiết lập thông tin đăng nhập
-        client.connect("127.0.0.1", 1883)  # Kết nối tới broker MQTT
+        client.connect(ip, port)  # Kết nối tới broker MQTT
         client.loop_forever()
 
     if(temp_info1.get('Topic') and temp_info.get('Username') and temp_info.get('Password') and temp_info.get('Client_Id')):
@@ -93,7 +105,8 @@ def All(run):
 
 
 if __name__ == "__main__":
-    import sys
-    data = sys.stdin.readline()
+  
+    data1 = sys.stdin.readline()
+    data=process_json_input(data1)
     print("Loading spoofing device IOT ....................")
-    All(1)
+    All(data["ip"], data["port"])

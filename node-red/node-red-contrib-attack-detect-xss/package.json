@@ -1,5 +1,5 @@
 {
-    "name" : "node-red-contrib-detect-xss",
+    "name" : "node-red-contrib-attack-detect-xss",
     "node-red" : {
         "nodes": {
             "detect-XSS": "detect-xss.js"
