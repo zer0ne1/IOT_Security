@@ -10,7 +10,7 @@ module.exports = function(RED) {
             var options = {
                 mode: 'text',
                 pythonOptions: ['-u'], // unbuffered output
-                scriptPath: './node-red-contrib-detect-xss', // Đường dẫn đến script Python của bạn
+                scriptPath: './node-red-contrib-attack-detect-xss', // Đường dẫn đến script Python của bạn
                 args: [msg.payload] // Các đối số truyền vào cho script Python
             };
             PythonShell.run('xss.py', options).then(messages=>{
