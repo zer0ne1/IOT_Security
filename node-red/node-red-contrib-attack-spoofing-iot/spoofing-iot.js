@@ -9,11 +9,19 @@ module.exports = function(RED) {
             // Tạo một tùy chọn để gọi mã Pythonmp
             let pyshell = new PythonShell('node_modules/node-red-contrib-attack-spoofing-iot/spoofing-iot.py');
             pyshell.send(jsonPayload);
-            
+            // pyshell.on('message', function(message) {
+            //     try {
+            //         let parsedMessage = JSON.parse(message);
+            //         msg.payload = parsedMessage;
+            //         node.send(msg);
+            //     } catch (e) {
+            //         node.error("Invalid JSON from Python script: " + message);
+            //     }
+            // });
             pyshell.on('message', function (message) {
-            msg.payload = message;
-            node.send(msg);
-            console.log(message);
+                msg.payload = message;
+                node.send(msg);
+                console.log(msg.payload)
             });
 
             // end the input stream and allow the process to exit
@@ -23,18 +31,6 @@ module.exports = function(RED) {
                 console.log('The exit signal was: ' + signal);
                 console.log('finished');
             });
-            // var options = {
-            //     mode: 'text',
-            //     pythonOptions: ['-u'], // unbuffered output
-            //     scriptPath: './node-red-contrib-attack-spoofing-iot', // Đường dẫn đến script Python của bạn
-            //     args: [msg.payload] // Các đối số truyền vào cho script Python
-            // };
-            // PythonShell.run('spoofing-iot.py', options).then(messages=>{
-            //     // results is an array consisting of messages collected during execution
-            //     msg.payload = messages;
-            //     console.log("Messages: ",messages)
-            //     node.send(msg);
-            //   });
         });
     }
     RED.nodes.registerType("spoofing-iot", SpoofingIOT);

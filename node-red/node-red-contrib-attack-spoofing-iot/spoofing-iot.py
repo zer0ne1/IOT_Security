@@ -23,7 +23,7 @@ def process_json_input(json_string):
         sys.stdout.flush()
         return None
 
-def All(ip, port):
+def All(ip, port, interface):
     def filter_mqtt(pkt):
         if pkt.haslayer(Raw):
             raw_data = pkt[Raw].load
@@ -69,7 +69,7 @@ def All(ip, port):
                 sys.stdout.flush()
 
     # Bắt và lọc những gói tin MQTT Connect Command và Subscribe Request
-    sniff(iface="Software Loopback Interface 1", filter="tcp port 1883",
+    sniff(iface=interface, filter="tcp port 1883",
           prn=decode_mqtt_raw, lfilter=filter_mqtt, count=2)
 
     def spoofingIOT(Client_Id,Username, Password, Topic):
@@ -105,8 +105,7 @@ def All(ip, port):
 
 
 if __name__ == "__main__":
-  
     data1 = sys.stdin.readline()
     data=process_json_input(data1)
     print("Loading spoofing device IOT ....................")
-    All(data["ip"], data["port"])
+    All(data["ip"], data["port"], data["interface"])
