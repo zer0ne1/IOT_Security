@@ -108,4 +108,5 @@ if __name__ == "__main__":
     data1 = sys.stdin.readline()
     data=process_json_input(data1)
     print("Loading spoofing device IOT ....................")
-    All(data["ip"], data["port"], data["interface"])
+    sys.stdout.flush()
+    All(data["ipserver"], int(data["port"]), data["interface"])

@@ -1,26 +1,77 @@
 <script type="text/javascript">
-    RED.nodes.registerType('spoofing-iot',{
+    RED.nodes.registerType('spoofing-iot', {
         category: 'function',
         color: 'red',
         defaults: {
-            name: {value:""}
+            name: { value: "" }
         },
         inputs: 1,
         outputs: 1,
         icon: "alert.svg",
-        label: function() {
-            return this.name||"Spoofing IOT";
+        label: function () {
+            return this.name || "Spoofing IOT";
         }
     });
 </script>
 
-<script type="text/html" data-template-name="Spoofing-IoT">
+<script type="text/html" data-template-name="spoofing-iot">
+    <style>
+        .btn {
+            background-color: cornflowerblue;
+            cursor: pointer;
+            border-radius: 5px;
+            padding: 5px 25px 5px 25px;
+            float: right;
+            color: #fff;
+        }
+    </style>
     <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
+        <label for="ipserver"><i class="fa fa-tag"></i> Ip Server</label>
+        <input type="text" id="ipserver" placeholder="Ip Server">
     </div>
+    <div class="form-row">
+        <label for="port"><i class="fa fa-tag"></i> Port</label>
+        <input type="number" id="port" placeholder="Port">
+    </div>
+    <div class="form-row">
+        <label for="interface"><i class="fa fa-tag"></i> Interface</label>
+        <input type="text" id="interface" placeholder="Interface">
+    </div>
+    <button class="btn" onclick="sendData()">Start</button>
+
+    <script>
+        function sendData() {
+
+            const ipserver = document.getElementById('ipserver').value;
+            const port = document.getElementById('port').value;
+            const interface = document.getElementById('interface').value;
+
+            const data = {
+                ipserver: ipserver,
+                port: port,
+                interface:interface
+            };
+
+            console.log("Sending data:", data);  // Kiểm tra dữ liệu trước khi gửi
+
+            // Gửi dữ liệu đến Node-RED thông qua sự kiện
+            fetch('http://localhost:1880/inject-data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                console.log('Data sent successfully');
+            })
+            .catch(error => {
+                console.error('Error sending data:', error);
+            });
+        }
+    </script>
 </script>
 
-<script type="text/html" data-help-name="lower-case">
-    <p>A simple node that converts the message payloads into all lower-case characters</p>
+<script type="text/html" data-help-name="spoofing-iot">
+    <p>A simple node that simulates spoofing IOT messages</p>
 </script>

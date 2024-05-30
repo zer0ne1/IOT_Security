@@ -53,10 +53,5 @@ if __name__ == "__main__":
     # Xử lý chuỗi JSON thành đối tượng Python
     data = process_json_input(json_string)
 
-
-    if data:
-        try:
-            DOS_CoAP(data['ip'], data['port'], data['times'], data['threads'], data['max_requests'])
-        except Exception as e:
-            print("Error:", e)
-            sys.stdout.flush()
+    DOS_CoAP(data['ipserver'], int(data['port']), int(data['times']), int(data['threads']), int(data['request']))
+       
