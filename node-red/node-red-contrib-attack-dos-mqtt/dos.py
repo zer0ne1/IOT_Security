@@ -85,4 +85,4 @@ def main(_broker_address,_port,request):
 if __name__ == "__main__":
     data1 = sys.stdin.readline()
     data=process_json_input(data1)
-    main(data["ip"], data["port"],data["request"])
+    main(data["ipserver"], int(data["port"]),int(data["request"]))

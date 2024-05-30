@@ -103,6 +103,6 @@ def mqtt_bruteforce(host, port, user_file, pass_file):
 if __name__ == "__main__":
     data = sys.stdin.readline()
     data1 = process_json_input(data)
-    mqtt_bruteforce(data1['HOST'], data1['PORT'], data1['USER_FILE'], data1['PASS_FILE'])
+    mqtt_bruteforce(data1['ipserver'], int(data1['port']), data1['USER_FILE'], data1['PASS_FILE'])
 
 

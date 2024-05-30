@@ -15,12 +15,75 @@
 </script>
 
 <script type="text/html" data-template-name="attack-dos-coap">
+    <style>
+        .btn {
+            background-color: cornflowerblue;
+            cursor: pointer;
+            border-radius: 5px;
+            padding: 5px 25px 5px 25px;
+            float: right;
+            color: #fff;
+        }
+    </style>
     <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
+        <label for="ipserver"><i class="fa fa-tag"></i> Ip Server</label>
+        <input type="text" id="ipserver" placeholder="Ip Server">
     </div>
+    <div class="form-row">
+        <label for="port"><i class="fa fa-tag"></i> Port</label>
+        <input type="number" id="port" placeholder="Port">
+    </div>
+    <div class="form-row">
+        <label for="request"><i class="fa fa-tag"></i> Request</label>
+        <input type="number" id="request" placeholder="Request">
+    </div>
+    <div class="form-row">
+        <label for="threads"><i class="fa fa-tag"></i> Threads</label>
+        <input type="number" id="threads" placeholder="Threads">
+    </div>
+    <div class="form-row">
+        <label for="times"><i class="fa fa-tag"></i> Times</label>
+        <input type="number" id="times" placeholder="Times">
+    </div>
+    <button class="btn" onclick="sendData()">Start</button>
+
+    <script>
+        function sendData() {
+
+            const ipserver = document.getElementById('ipserver').value;
+            const port = document.getElementById('port').value;
+            const request = document.getElementById('request').value;
+            const threads = document.getElementById('threads').value;
+            const times = document.getElementById('times').value;
+
+            const data = {
+                ipserver: ipserver,
+                port: port,
+                request:request,
+                threads:threads,
+                times:times
+            };
+
+            console.log("Sending data:", data);  // Kiểm tra dữ liệu trước khi gửi
+
+            // Gửi dữ liệu đến Node-RED thông qua sự kiện
+            fetch('http://localhost:1880/dos-coap', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                console.log('Data sent successfully');
+            })
+            .catch(error => {
+                console.error('Error sending data:', error);
+            });
+        }
+    </script>
 </script>
 
 <script type="text/html" data-help-name="attack-dos-coap">
-    <p>A simple node that converts the message payloads into all lower-case characters</p>
+    <p>Modul attack dos Coap</p>
 </script>
