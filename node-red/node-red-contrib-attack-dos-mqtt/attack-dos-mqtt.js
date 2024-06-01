@@ -11,6 +11,7 @@ module.exports = function(RED) {
             let pyshell = new PythonShell('node_modules/node-red-contrib-attack-dos-mqtt/dos.py');
             pyshell.send(jsonPayload);
             pyshell.on('message', function (message) {
+                console.log(message)
                 
                 node.send({ payload: message });
             });

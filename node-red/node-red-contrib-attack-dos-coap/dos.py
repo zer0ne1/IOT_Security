@@ -52,6 +52,5 @@ if __name__ == "__main__":
     json_string = sys.stdin.readline()
     # Xử lý chuỗi JSON thành đối tượng Python
     data = process_json_input(json_string)
-
     DOS_CoAP(data['ipserver'], int(data['port']), int(data['times']), int(data['threads']), int(data['request']))
        
