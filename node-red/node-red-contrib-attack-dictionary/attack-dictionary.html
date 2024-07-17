@@ -62,7 +62,7 @@
             console.log("Sending data:", data);  // Kiểm tra dữ liệu trước khi gửi
 
             // Gửi dữ liệu đến Node-RED thông qua sự kiện
-            fetch('http://localhost:1880/attack-dic', {
+            fetch('attack-dic', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -77,7 +77,7 @@
             console.log("Sending data:", formData.getAll("architectures"),formData.getAll("file"));  // Kiểm tra dữ liệu trước khi gửi
 
             // Gửi dữ liệu đến Node-RED thông qua sự kiện
-            fetch('http://localhost:1880/reverse-binary', {
+            fetch('reverse-binary', {
                 method: 'POST',
                 body: formData
             })

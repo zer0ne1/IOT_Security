@@ -55,7 +55,7 @@
             console.log("Sending data:", data);  // Kiểm tra dữ liệu trước khi gửi
 
             // Gửi dữ liệu đến Node-RED thông qua sự kiện
-            fetch('http://localhost:1880/inject-data', {
+            fetch('inject-data', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
