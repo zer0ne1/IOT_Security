@@ -1,0 +1,11 @@
+{
+    "name": "node-red-contrib-select-flows",
+    "node-red": {
+        "nodes": {
+            "Select-Flow": "select-flow.js"
+        }
+    },
+    "dependencies": {
+        "node-red-contrib-select-flows": "file:"
+    }
+}

@@ -1,8 +1,11 @@
 {
-    "name" : "node-red-contrib-attack-reverse-binary",
-    "node-red" : {
+    "name": "node-red-contrib-attack-reverse-binary",
+    "node-red": {
         "nodes": {
             "Reverse-Binary": "reverse.js"
         }
+    },
+    "dependencies": {
+        "node-red-contrib-attack-reverse-binary": "file:"
     }
 }

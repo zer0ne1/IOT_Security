@@ -1,0 +1,925 @@
+[
+    {
+        "id": "341953a1e649e06b",
+        "type": "tab",
+        "label": "Master",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "c34212364ae46e56",
+        "type": "mqtt out",
+        "z": "341953a1e649e06b",
+        "name": "Get Flow",
+        "topic": "Get/Flow/Slave",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "245b962f.f3058a",
+        "x": 320,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "fa0b27cbcf89379f",
+        "type": "mqtt in",
+        "z": "341953a1e649e06b",
+        "name": "Resp Flow",
+        "topic": "Resp/Flow/Slave",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "245b962f.f3058a",
+        "inputs": 0,
+        "x": 520,
+        "y": 660,
+        "wires": [
+            [
+                "63dcfa4bd5d0076d"
+            ]
+        ]
+    },
+    {
+        "id": "a3ef1cc85960d1c3",
+        "type": "inject",
+        "z": "341953a1e649e06b",
+        "name": "Get Flows",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{}",
+        "payloadType": "json",
+        "x": 100,
+        "y": 520,
+        "wires": [
+            [
+                "5a7582417b4b1390"
+            ]
+        ]
+    },
+    {
+        "id": "5a7582417b4b1390",
+        "type": "mqtt out",
+        "z": "341953a1e649e06b",
+        "name": "Get Flows",
+        "topic": "Get/Flows/Slave",
+        "qos": "",
+        "retain": "",
+        "broker": "245b962f.f3058a",
+        "x": 260,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "0f894191c0dea156",
+        "type": "mqtt in",
+        "z": "341953a1e649e06b",
+        "name": "Resp Flows",
+        "topic": "Resp/Flows/Slave",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "245b962f.f3058a",
+        "inputs": 0,
+        "x": 270,
+        "y": 560,
+        "wires": [
+            [
+                "64e297b76e4383ed",
+                "30364d7749cb7ae6"
+            ]
+        ]
+    },
+    {
+        "id": "e0945f5582fcab92",
+        "type": "change",
+        "z": "341953a1e649e06b",
+        "name": "Sandbox ID",
+        "rules": [
+            {
+                "p": "headers",
+                "t": "delete",
+                "pt": "msg"
+            },
+            {
+                "p": "headers.Authorization",
+                "t": "set",
+                "pt": "msg",
+                "to": "token.access_token",
+                "tot": "flow"
+            },
+            {
+                "p": "headers.Node-RED-API-Version",
+                "t": "set",
+                "pt": "msg",
+                "to": "v1",
+                "tot": "str"
+            },
+            {
+                "p": "id",
+                "t": "set",
+                "pt": "msg",
+                "to": "SandboxID",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 270,
+        "y": 800,
+        "wires": [
+            [
+                "a92d37ba14323779"
+            ]
+        ]
+    },
+    {
+        "id": "a92d37ba14323779",
+        "type": "http request",
+        "z": "341953a1e649e06b",
+        "name": "GET /flow/ID",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://localhost:1880/flow/{{{id}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 450,
+        "y": 800,
+        "wires": [
+            [
+                "f788d88161989fb1"
+            ]
+        ]
+    },
+    {
+        "id": "679f1ca4b56b7411",
+        "type": "change",
+        "z": "341953a1e649e06b",
+        "name": "Edit ID",
+        "rules": [
+            {
+                "p": "EditID",
+                "t": "set",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 310,
+        "y": 680,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "23ddda8a6964f58a",
+        "type": "inject",
+        "z": "341953a1e649e06b",
+        "name": "Push Flow",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{}",
+        "payloadType": "json",
+        "x": 80,
+        "y": 800,
+        "wires": [
+            [
+                "e0945f5582fcab92",
+                "e41abaa726a94f9f"
+            ]
+        ]
+    },
+    {
+        "id": "e41abaa726a94f9f",
+        "type": "delay",
+        "z": "341953a1e649e06b",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "outputs": 1,
+        "x": 260,
+        "y": 900,
+        "wires": [
+            [
+                "89c9f9fd6975dd0d"
+            ]
+        ]
+    },
+    {
+        "id": "605298041d2c3f07",
+        "type": "mqtt out",
+        "z": "341953a1e649e06b",
+        "name": "Replace Flow",
+        "topic": "Replace/Flow/Slave",
+        "qos": "",
+        "retain": "",
+        "broker": "245b962f.f3058a",
+        "x": 1020,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "cddabbd4fe5e2052",
+        "type": "function",
+        "z": "341953a1e649e06b",
+        "name": "Format Payload",
+        "func": "msg.payload = {\"id\": flow.get('EditID'), \"payload\": msg.payload};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 820,
+        "y": 780,
+        "wires": [
+            [
+                "605298041d2c3f07"
+            ]
+        ]
+    },
+    {
+        "id": "f4b3456748577c3e",
+        "type": "http request",
+        "z": "341953a1e649e06b",
+        "name": "POST /auth/token",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "http://localhost:1880/auth/token",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 500,
+        "y": 140,
+        "wires": [
+            [
+                "3ce00a45c36513c0"
+            ]
+        ]
+    },
+    {
+        "id": "c72d46ae159f9665",
+        "type": "change",
+        "z": "341953a1e649e06b",
+        "name": "POST /auth/token",
+        "rules": [
+            {
+                "p": "payload",
+                "t": "delete",
+                "pt": "msg"
+            },
+            {
+                "p": "payload.client_id",
+                "t": "set",
+                "pt": "msg",
+                "to": "node-red-editor",
+                "tot": "str"
+            },
+            {
+                "p": "payload.grant_type",
+                "t": "set",
+                "pt": "msg",
+                "to": "password",
+                "tot": "str"
+            },
+            {
+                "p": "payload.scope",
+                "t": "set",
+                "pt": "msg",
+                "to": "*",
+                "tot": "str"
+            },
+            {
+                "p": "payload.username",
+                "t": "set",
+                "pt": "msg",
+                "to": "admin",
+                "tot": "str"
+            },
+            {
+                "p": "payload.password",
+                "t": "set",
+                "pt": "msg",
+                "to": "123456789",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 300,
+        "y": 140,
+        "wires": [
+            [
+                "f4b3456748577c3e"
+            ]
+        ]
+    },
+    {
+        "id": "3ce00a45c36513c0",
+        "type": "json",
+        "z": "341953a1e649e06b",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 680,
+        "y": 140,
+        "wires": [
+            [
+                "666f68b8fa9a40d8"
+            ]
+        ]
+    },
+    {
+        "id": "d8c180360fafd626",
+        "type": "comment",
+        "z": "341953a1e649e06b",
+        "name": "Token ",
+        "info": "",
+        "x": 110,
+        "y": 30,
+        "wires": []
+    },
+    {
+        "id": "3db9d09622738a62",
+        "type": "mqtt in",
+        "z": "341953a1e649e06b",
+        "name": "Gen Token",
+        "topic": "Gen/Token",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "245b962f.f3058a",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 120,
+        "y": 140,
+        "wires": [
+            [
+                "c72d46ae159f9665"
+            ]
+        ]
+    },
+    {
+        "id": "ad863ddee8c06c30",
+        "type": "change",
+        "z": "341953a1e649e06b",
+        "name": "",
+        "rules": [
+            {
+                "p": "token",
+                "t": "set",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 960,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "666f68b8fa9a40d8",
+        "type": "function",
+        "z": "341953a1e649e06b",
+        "name": "Bearer",
+        "func": "msg.payload.access_token = \"Bearer \" + msg.payload.access_token\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 810,
+        "y": 140,
+        "wires": [
+            [
+                "ad863ddee8c06c30"
+            ]
+        ]
+    },
+    {
+        "id": "ace15a7b9f6978b5",
+        "type": "inject",
+        "z": "341953a1e649e06b",
+        "name": "Gen Token",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{}",
+        "payloadType": "json",
+        "x": 120,
+        "y": 80,
+        "wires": [
+            [
+                "3d99b014023b9396"
+            ]
+        ]
+    },
+    {
+        "id": "3d99b014023b9396",
+        "type": "mqtt out",
+        "z": "341953a1e649e06b",
+        "name": "Gen Token",
+        "topic": "Gen/Token",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "245b962f.f3058a",
+        "x": 290,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "63dcfa4bd5d0076d",
+        "type": "change",
+        "z": "341953a1e649e06b",
+        "name": "Load to Sandbox",
+        "rules": [
+            {
+                "p": "headers",
+                "t": "delete",
+                "pt": "msg"
+            },
+            {
+                "p": "headers.Authorization",
+                "t": "set",
+                "pt": "msg",
+                "to": "token.access_token",
+                "tot": "flow"
+            },
+            {
+                "p": "headers.Node-RED-API-Version",
+                "t": "set",
+                "pt": "msg",
+                "to": "v1",
+                "tot": "str"
+            },
+            {
+                "p": "TempLABEL",
+                "t": "set",
+                "pt": "flow",
+                "to": "payload.label",
+                "tot": "msg"
+            },
+            {
+                "p": "id",
+                "t": "set",
+                "pt": "msg",
+                "to": "SandboxID",
+                "tot": "flow"
+            },
+            {
+                "p": "payload.label",
+                "t": "set",
+                "pt": "msg",
+                "to": "Sandbox",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 730,
+        "y": 660,
+        "wires": [
+            [
+                "b22fc2da4701bc53",
+                "107a8f7613c8cd6f"
+            ]
+        ]
+    },
+    {
+        "id": "b22fc2da4701bc53",
+        "type": "http request",
+        "z": "341953a1e649e06b",
+        "name": "PUT /flow/ID",
+        "method": "PUT",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://localhost:1880/flow/{{{id}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 950,
+        "y": 660,
+        "wires": [
+            [
+                "107a8f7613c8cd6f"
+            ]
+        ]
+    },
+    {
+        "id": "89c9f9fd6975dd0d",
+        "type": "change",
+        "z": "341953a1e649e06b",
+        "name": "Reset Sandbox",
+        "rules": [
+            {
+                "p": "headers",
+                "t": "delete",
+                "pt": "msg"
+            },
+            {
+                "p": "headers.Authorization",
+                "t": "set",
+                "pt": "msg",
+                "to": "token.access_token",
+                "tot": "flow"
+            },
+            {
+                "p": "headers.Node-RED-API-Version",
+                "t": "set",
+                "pt": "msg",
+                "to": "v1",
+                "tot": "str"
+            },
+            {
+                "p": "id",
+                "t": "set",
+                "pt": "msg",
+                "to": "SandboxID",
+                "tot": "flow"
+            },
+            {
+                "p": "payload",
+                "t": "set",
+                "pt": "msg",
+                "to": "{\"label\":\"Sandbox\", \"nodes\":[]}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 900,
+        "wires": [
+            [
+                "61ed3a3d30d5e21c"
+            ]
+        ]
+    },
+    {
+        "id": "61ed3a3d30d5e21c",
+        "type": "http request",
+        "z": "341953a1e649e06b",
+        "name": "PUT /flow/ID",
+        "method": "PUT",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "http://localhost:1880/flow/{{{id}}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 670,
+        "y": 900,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f788d88161989fb1",
+        "type": "change",
+        "z": "341953a1e649e06b",
+        "name": "Temp LABEL",
+        "rules": [
+            {
+                "p": "payload.label",
+                "t": "set",
+                "pt": "msg",
+                "to": "TempLABEL",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 630,
+        "y": 780,
+        "wires": [
+            [
+                "cddabbd4fe5e2052"
+            ]
+        ]
+    },
+    {
+        "id": "107a8f7613c8cd6f",
+        "type": "debug",
+        "z": "341953a1e649e06b",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 920,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "64e297b76e4383ed",
+        "type": "debug",
+        "z": "341953a1e649e06b",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "30364d7749cb7ae6",
+        "type": "set-slave",
+        "z": "341953a1e649e06b",
+        "name": "",
+        "x": 130,
+        "y": 640,
+        "wires": [
+            [
+                "c34212364ae46e56",
+                "679f1ca4b56b7411"
+            ]
+        ]
+    },
+    {
+        "id": "9db5c8ab580d08bb",
+        "type": "select-flow",
+        "z": "341953a1e649e06b",
+        "name": "",
+        "x": 140,
+        "y": 440,
+        "wires": [
+            [
+                "a125319c0e74ff73",
+                "8d8cbf3acf9b7938"
+            ]
+        ]
+    },
+    {
+        "id": "a125319c0e74ff73",
+        "type": "change",
+        "z": "341953a1e649e06b",
+        "name": "Set Sandbox ID",
+        "rules": [
+            {
+                "p": "SandboxID",
+                "t": "set",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 340,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8d8cbf3acf9b7938",
+        "type": "debug",
+        "z": "341953a1e649e06b",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "13bcd3e4616614cb",
+        "type": "http request",
+        "z": "341953a1e649e06b",
+        "name": "GET /flows",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://localhost:1880/flows",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 150,
+        "y": 380,
+        "wires": [
+            [
+                "9db5c8ab580d08bb"
+            ]
+        ]
+    },
+    {
+        "id": "d876cc57df3a11e3",
+        "type": "change",
+        "z": "341953a1e649e06b",
+        "name": "GET /flows",
+        "rules": [
+            {
+                "p": "headers",
+                "t": "delete",
+                "pt": "msg"
+            },
+            {
+                "p": "headers.Authorization",
+                "t": "set",
+                "pt": "msg",
+                "to": "token.access_token",
+                "tot": "flow"
+            },
+            {
+                "p": "headers.Node-RED-API-Version",
+                "t": "set",
+                "pt": "msg",
+                "to": "v1",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 150,
+        "y": 320,
+        "wires": [
+            [
+                "13bcd3e4616614cb"
+            ]
+        ]
+    },
+    {
+        "id": "e0b12033761c90b0",
+        "type": "mqtt in",
+        "z": "341953a1e649e06b",
+        "name": "Get Flows",
+        "topic": "Get/Flows/Slave",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "cf82385a.2931b8",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 140,
+        "y": 260,
+        "wires": [
+            [
+                "d876cc57df3a11e3"
+            ]
+        ]
+    },
+    {
+        "id": "245b962f.f3058a",
+        "type": "mqtt-broker",
+        "name": "MQTT Broker",
+        "broker": "127.0.0.1",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "compatmode": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "cf82385a.2931b8",
+        "type": "mqtt-broker",
+        "name": "MQTT Broker",
+        "broker": "127.0.0.1",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "compatmode": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]

@@ -1,8 +1,11 @@
 {
-    "name" : "node-red-contrib-attack-spoofing-iot",
-    "node-red" : {
+    "name": "node-red-contrib-attack-spoofing-iot",
+    "node-red": {
         "nodes": {
             "spoofing-IOT": "spoofing-iot.js"
         }
+    },
+    "dependencies": {
+        "node-red-contrib-attack-spoofing-iot": "file:"
     }
 }

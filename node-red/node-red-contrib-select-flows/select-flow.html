@@ -1,0 +1,98 @@
+<script type="text/javascript">
+    RED.nodes.registerType('select-flow', {
+        category: 'function',
+        color: 'grey',
+        defaults: {
+            name: { value: "" }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "alert.svg",
+        label: function () {
+            return "Set SanBoxID";
+        },
+    });
+
+    function populateFlows(flowArray) {
+        const selectElement = document.getElementById('flows');
+        selectElement.innerHTML = ''; // Xóa tất cả các option hiện tại
+        flowArray.forEach(flow => {
+            const option = document.createElement('option');
+            option.value = flow.id;
+            option.text = flow.label;
+            selectElement.appendChild(option);
+        });
+    }
+</script>
+
+<script type="text/html" data-template-name="select-flow">
+    <style>
+        .btn {
+            background-color: cornflowerblue;
+            cursor: pointer;
+            border-radius: 5px;
+            padding: 5px 25px 5px 25px;
+            float: right;
+            color: #fff;
+        }
+    </style>
+    <div class="form-row">
+        <label for="flows"><i class="fa fa-tag"></i> Flow</label>
+        <select id="flows">
+            <!-- Các option sẽ được thêm vào từ JavaScript -->
+        </select>
+    </div>
+    <button class="btn" onclick="sendData()">Start</button>
+
+    <script>
+        function fetchFlowData() {
+            fetch('/select-flow-data')
+                .then(response => response.json())
+                .then(data => {
+                    populateFlows(data);
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function populateFlows(flowArray) {
+            const selectElement = document.getElementById('flows');
+            selectElement.innerHTML = ''; // Xóa tất cả các option hiện tại
+            flowArray.forEach(flow => {
+                const option = document.createElement('option');
+                option.value = flow.id;
+                option.text = flow.label;
+                selectElement.appendChild(option);
+            });
+        }
+
+        function sendData() {
+            const selectedFlow = document.getElementById('flows').value;
+            console.log("Kiểm tra trước khi gửi", selectedFlow)
+            
+            // Kiểm tra dữ liệu trước khi gửi
+
+            fetch('select-flow', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    flow:selectedFlow
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Data sent successfully');
+                } else {
+                    console.error('Error sending data:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.error('Error sending data:', error);
+            });
+        }
+
+        // Fetch initial data
+        fetchFlowData();
+    </script>
+</script>

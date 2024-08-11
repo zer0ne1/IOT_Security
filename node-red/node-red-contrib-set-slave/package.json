@@ -1,0 +1,11 @@
+{
+    "name": "node-red-contrib-set-slave",
+    "node-red": {
+        "nodes": {
+            "Set-Slave": "set-slave.js"
+        }
+    },
+    "dependencies": {
+        "node-red-contrib-set-slave": "file:"
+    }
+}
