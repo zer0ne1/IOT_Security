@@ -1,8 +1,11 @@
 {
-    "name" : "node-red-contrib-attack-dos-coap",
-    "node-red" : {
+    "name": "node-red-contrib-attack-dos-coap",
+    "node-red": {
         "nodes": {
             "DOS-COAP": "attack-dos-coap.js"
         }
+    },
+    "dependencies": {
+        "node-red-contrib-attack-dos-coap": "file:"
     }
 }

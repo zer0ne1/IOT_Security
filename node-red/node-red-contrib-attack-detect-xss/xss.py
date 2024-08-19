@@ -74,6 +74,7 @@ def scan_xss(url):
     # get all the forms from the URL
     forms = get_all_forms(url)
     print(f"[+] Detected {len(forms)} forms on {url}.")
+    sys.stdout.flush()
     js_script = "<Script>alert('hi')</scripT>"
     # returning value
     is_vulnerable = False
@@ -84,13 +85,15 @@ def scan_xss(url):
         if js_script in content:
             print(f"[+] XSS Detected on {url}")
             print(f"[*] Form details:")
-            pprint(form_details)
+            print(form_details)
+            sys.stdout.flush()
             is_vulnerable = True
             # won't break because we want to print other available vulnerable forms
-    return is_vulnerable
 
 
 if __name__ == "__main__":
     import sys
     url = sys.argv[1]
-    print(scan_xss(url))
+    print("why ??????", url)
+    
+    scan_xss(url)

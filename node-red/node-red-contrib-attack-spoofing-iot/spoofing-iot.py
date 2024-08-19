@@ -41,19 +41,32 @@ def All(ip, port, interface):
     def decode_mqtt_raw(pkt):
         if pkt.haslayer(Raw):
             raw_data = pkt[Raw].load
+            print("Raw data:", raw_data)
             try:
                 if raw_data.startswith(b'\x10'):
                     payload = raw_data[12:]
                     payload_ascii = payload.decode('utf-8')
                     values = payload_ascii.split('\x00')
-                    Client_Id=extract_alphanumeric(values[1])
-                    Username = extract_alphanumeric(values[2])
-                    Password = extract_alphanumeric(values[3])
-                    temp_info['Username'] = Username
-                    temp_info['Password'] = Password
-                    temp_info['Client_Id']=Client_Id
-                    print("Listening, Username,Password ",Client_Id,Username, Password)
-                    sys.stdout.flush()
+                    if len(values) > 3:
+                        Client_Id = extract_alphanumeric(values[1])
+                        Username = extract_alphanumeric(values[2])
+                        Password = extract_alphanumeric(values[3])
+                        temp_info['Username'] = Username
+                        temp_info['Password'] = Password
+                        temp_info['Client_Id'] = Client_Id
+                        print("Listening, Username, Password:", Client_Id, Username, Password)
+                        sys.stdout.flush()
+                    else:
+                        print("Error: Not enough elements in values")
+                        sys.stdout.flush()
+                    # Client_Id=extract_alphanumeric(values[1])
+                    # Username = extract_alphanumeric(values[2])
+                    # Password = extract_alphanumeric(values[3])
+                    # temp_info['Username'] = Username
+                    # temp_info['Password'] = Password
+                    # temp_info['Client_Id']=Client_Id
+                    # print("Listening, Username,Password ",Client_Id,Username, Password)
+                    # sys.stdout.flush()
 
                 if raw_data.startswith(b'\x82'):
                     raw_data_new = raw_data[:-1]
@@ -108,5 +121,6 @@ if __name__ == "__main__":
     data1 = sys.stdin.readline()
     data=process_json_input(data1)
     print("Loading spoofing device IOT ....................")
+    print(data)
     sys.stdout.flush()
     All(data["ipserver"], int(data["port"]), data["interface"])
