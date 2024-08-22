@@ -1,8 +1,11 @@
 {
-    "name" : "node-red-contrib-attack-dictionary",
-    "node-red" : {
+    "name": "node-red-contrib-attack-dictionary",
+    "node-red": {
         "nodes": {
             "Attack-Dictionary": "attack-dictionary.js"
         }
+    },
+    "dependencies": {
+        "node-red-contrib-attack-dictionary": "file:"
     }
 }

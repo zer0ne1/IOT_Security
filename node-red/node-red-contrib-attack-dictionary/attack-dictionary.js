@@ -19,12 +19,8 @@ module.exports = function(RED) {
                 console.log('The exit code was: ' + code);
                 console.log('The exit signal was: ' + signal);
                 console.log('finished');
-            });
-     
-            
-        });
-
-        
+            });            
+        });        
     }
     RED.nodes.registerType("attack-dictionary", AttackDictionary);
 }

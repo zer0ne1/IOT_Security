@@ -71,7 +71,7 @@ def main(_broker_address,_port,request):
             print(f"Request send client{i}")
             sys.stdout.flush()
             vett.append(client)  # Thêm client vào mảng
-            vett[i-1].connect(_broker_address, _port, 60)  # Yêu cầu kết nối tới broker
+            vett[i-1].connect(_broker_address, _port, 60000)  # Yêu cầu kết nối tới broker
 
         print('\nRequests sent !\n')
         print('[ Attack terminated ]\n')

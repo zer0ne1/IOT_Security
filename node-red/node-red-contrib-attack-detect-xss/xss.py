@@ -2,6 +2,9 @@ import requests
 from pprint import pprint
 from bs4 import BeautifulSoup as bs
 from urllib.parse import urljoin
+import sys
+import json
+import time
 
 
 def get_all_forms(url):
@@ -33,15 +36,7 @@ def get_form_details(form):
 
 
 def submit_form(form_details, url, value):
-    """
-    Submits a form given in `form_details`
-    Params:
-        form_details (list): a dictionary that contain form information
-        url (str): the original URL that contain that form
-        value (str): this will be replaced to all text and search inputs
-    Returns the HTTP Response after form submission
-    """
-    # construct the full URL (if the url provided in action is relative)
+
     target_url = urljoin(url, form_details["action"])
     # get the inputs
     inputs = form_details["inputs"]
@@ -72,28 +67,41 @@ def scan_xss(url):
     returns True if any is vulnerable, False otherwise
     """
     # get all the forms from the URL
-    forms = get_all_forms(url)
-    print(f"[+] Detected {len(forms)} forms on {url}.")
-    sys.stdout.flush()
-    js_script = "<Script>alert('hi')</scripT>"
-    # returning value
-    is_vulnerable = False
-    # iterate over all forms
-    for form in forms:
-        form_details = get_form_details(form)
-        content = submit_form(form_details, url, js_script).content.decode()
-        if js_script in content:
-            print(f"[+] XSS Detected on {url}")
-            print(f"[*] Form details:")
-            print(form_details)
-            sys.stdout.flush()
-            is_vulnerable = True
-            # won't break because we want to print other available vulnerable forms
+    try:
+        forms = get_all_forms(url)
+        print(f"[+] Detected {len(forms)} forms on {url}.")
+        sys.stdout.flush()
+        js_script = "<Script>alert('hi')</scripT>"
+        # returning value
+        is_vulnerable = False
+        # iterate over all forms
+        for form in forms:
+            form_details = get_form_details(form)
+            content = submit_form(form_details, url, js_script).content.decode()
+            if js_script in content:
+                print(f"[+] XSS Detected on {url}")
+                print("Form details:",form_details)
+                sys.stdout.flush()
+                is_vulnerable = True
+                # won't break because we want to print other available vulnerable forms
+    except Exception as e:
+        print("Error not Found!!!!!!!!!")
+        sys.stdout.flush()
 
-
+def process_json_input(json_string):
+    try:
+        # Phân tích chuỗi JSON thành một đối tượng Python
+        data = json.loads(json_string)
+        # Trả về đối tượng đã được phân tích
+        return data
+    except json.JSONDecodeError as e:
+        # Xử lý trường hợp nếu chuỗi JSON không hợp lệ
+        print("Invalid JSON format:", e)
+        return None
 if __name__ == "__main__":
-    import sys
-    url = sys.argv[1]
-    print("why ??????", url)
     
-    scan_xss(url)
+    json_string = sys.stdin.readline()
+    data = process_json_input(json_string)
+    print("Loading Scanning Xss................")
+    sys.stdout.flush()
+    scan_xss(data['url'])
