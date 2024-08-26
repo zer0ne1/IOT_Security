@@ -68,5 +68,6 @@ if __name__ == "__main__":
     data1 = sys.stdin.readline()
     data=process_json_input(data1)
     print("Loading Reverse Binary To Assembly ....................")
-    reverse(data)
     sys.stdout.flush()
+    reverse(data)
+    

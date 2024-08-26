@@ -1,100 +1,17 @@
 <script type="text/javascript">
-    RED.nodes.registerType('attack-reverse-binary', {
-        category: 'function',
-        color: 'red',
-        defaults: {
-            name: { value: "" }
-        },
-        inputs: 1,
-        outputs: 1,
-        icon: "alert.svg",
-        label: function () {
-            return this.name || "REVERSE BINARY";
-        }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize mode options based on the default selected architecture
+        updateModeOptions();
+
+        // Attach event listener after the DOM is fully loaded
+        document.getElementById('architectures').addEventListener('change', updateModeOptions);
     });
-</script>
 
-<script type="text/html" data-template-name="attack-reverse-binary">
-    <style>
-        .btn {
-            background-color: cornflowerblue;
-            cursor: pointer;
-            border-radius: 5px;
-            padding: 5px 25px 5px 25px;
-            float: right;
-            color: #fff;
-        }
-    </style>
-    <div class="form-row">
-        <label for="architectures"><i class="fa fa-tag"></i> Architecture</label>
-        <select id="architectures" onchange=updateModeOptions()>
-            <option value="CS_ARCH_X86">x86</option>
-            <option value="CS_ARCH_ARM">ARM</option>
-            <option value="CS_ARCH_ARM64">ARM64</option>
-            <option value="CS_ARCH_MIPS">MIPS</option>
-            <option value="CS_ARCH_PPC">PowerPC</option>
-            <option value="CS_ARCH_SPARC">SPARC</option>
-            <option value="CS_ARCH_SYSZ">SystemZ</option>
-            <option value="CS_ARCH_XCORE">XCore</option>
-        </select>
-    </div>
-    <div class="form-row">
-        <label for="mode"><i class="fa fa-tag"></i> Mode</label>
-        <select id="mode">
-            <option value="CS_MODE_64">CS_MODE_64</option>
-            <option value="CS_MODE_32">CS_MODE_32</option>
-            <option value="CS_MODE_16">CS_MODE_16</option>
-        </select>
-    </div>
-    <div class="form-row">
-        <label for="file"><i class="fa fa-tag"></i> Upload File</label>
-        <input type="file" id="file">
-    </div>
-    <button class="btn" onclick="sendData()">Start</button>
-
-    <script>
-        function sendData() {
-
-            const architectures = document.getElementById('architectures').value;
-            const mode = document.getElementById('mode').value;
-            const fileInput = document.getElementById('file');
-
-            const formData = new FormData();
-            formData.append('architectures', architectures);
-            formData.append('mode', mode);
-            if (fileInput.files.length > 0) {
-                formData.append('file', fileInput.files[0]);
-            }
-
-            console.log("Sending data:", formData.getAll("architectures"), formData.getAll("file"));  // Kiểm tra dữ liệu trước khi gửi
-
-            // Gửi dữ liệu đến Node-RED thông qua sự kiện
-            fetch('reverse-binary', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (response.ok) {
-                    console.log('Data sent successfully');
-                } else {
-                    console.error('Error sending data:', response.statusText);
-                }
-            })
-            .catch(error => {
-                console.error('Error sending data:', error);
-            });
-        }
-    </script>
-</script>
-
-<script type="text/html" data-help-name="attack-reverse-binary">
-    <p>A simple node that converts the message payloads into all lower-case characters</p>
-</script>
-
-<script>
     function updateModeOptions() {
         const architecture = document.getElementById("architectures").value;
+        console.log("architecture", architecture);
         const modeSelect = document.getElementById("mode");
+        console.log("modeSelect", modeSelect);
 
         const modes = {
             "CS_ARCH_X86": ["CS_MODE_64", "CS_MODE_32", "CS_MODE_16"],
@@ -121,6 +38,93 @@
         }
     }
 
-    // Initialize mode options based on the default selected architecture
-    updateModeOptions();
+    function sendData() {
+        const architectures = document.getElementById('architectures').value;
+        const mode = document.getElementById('mode').value;
+        const fileInput = document.getElementById('file');
+
+        const formData = new FormData();
+        formData.append('architectures', architectures);
+        formData.append('mode', mode);
+        if (fileInput.files.length > 0) {
+            formData.append('file', fileInput.files[0]);
+        }
+
+        console.log("Sending data:", formData.getAll("architectures"), formData.getAll("mode"), formData.getAll("file"));  // Kiểm tra dữ liệu trước khi gửi
+
+        // Gửi dữ liệu đến Node-RED thông qua sự kiện
+        fetch('reverse-binary', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Data sent successfully');
+            } else {
+                console.error('Error sending data:', response.statusText);
+            }
+        })
+        .catch(error => {
+            console.error('Error sending data:', error);
+        });
+    }
+</script>
+
+<script type="text/html" data-template-name="attack-reverse-binary">
+    <style>
+        .btn {
+            background-color: cornflowerblue;
+            cursor: pointer;
+            border-radius: 5px;
+            padding: 5px 25px 5px 25px;
+            float: right;
+            color: #fff;
+        }
+    </style>
+    <div class="form-row">
+        <label for="architectures"><i class="fa fa-tag"></i> Architecture</label>
+        <select id="architectures">
+            <option value="CS_ARCH_X86">x86</option>
+            <option value="CS_ARCH_ARM">ARM</option>
+            <option value="CS_ARCH_ARM64">ARM64</option>
+            <option value="CS_ARCH_MIPS">MIPS</option>
+            <option value="CS_ARCH_PPC">PowerPC</option>
+            <option value="CS_ARCH_SPARC">SPARC</option>
+            <option value="CS_ARCH_SYSZ">SystemZ</option>
+            <option value="CS_ARCH_XCORE">XCore</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="mode"><i class="fa fa-tag"></i> Mode</label>
+        <select id="mode">
+            <option value="CS_MODE_64">CS_MODE_64</option>
+            <option value="CS_MODE_32">CS_MODE_32</option>
+            <option value="CS_MODE_16">CS_MODE_16</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="file"><i class="fa fa-tag"></i> Upload File</label>
+        <input type="file" id="file">
+    </div>
+    <button class="btn" onclick="sendData()">Start</button>
+</script>
+
+<script type="text/html" data-help-name="attack-reverse-binary">
+    <p>A simple node that converts the message payloads into all lower-case characters</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('attack-reverse-binary', {
+        category: 'function',
+        color: 'red',
+        defaults: {
+            name: { value: "" }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "alert.svg",
+        label: function () {
+            return this.name || "REVERSE BINARY";
+        }
+    });
 </script>

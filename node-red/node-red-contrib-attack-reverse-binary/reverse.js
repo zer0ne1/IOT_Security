@@ -29,8 +29,9 @@ module.exports = function(RED) {
                 const jsonPayload = JSON.stringify(dataEnd);
 
             let pyshell = new PythonShell('node_modules/node-red-contrib-attack-reverse-binary/reverse.py');
+            console.log("alo",jsonPayload)
             pyshell.send(jsonPayload);
-
+            console.log("alo123",jsonPayload)
             pyshell.on('message', function (message) {
                 node.send({ payload: message });
             });

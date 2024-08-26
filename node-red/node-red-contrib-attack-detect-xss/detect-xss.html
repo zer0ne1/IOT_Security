@@ -28,6 +28,13 @@
         <label for="url"><i class="fa fa-tag"></i> URL</label>
         <input type="text" id="url" placeholder="URL">
     </div>
+    <div class="form-row">
+        <label for="type"><i class="fa fa-tag"></i>Scan Type</label>
+        <select id="type" aria-placeholder="Select Type">
+            <option value="response">Response</option>
+            <option value="payload">Payload</option>
+        </select>
+    </div>
     
     
     <button class="btn" onclick="sendData()">Start</button>
@@ -36,10 +43,10 @@
         function sendData() {
 
             const url = document.getElementById('url').value;
-            
-
+            const type = document.getElementById('type').value;
             const data = {
-                url:url
+                url:url,
+                type:type
             };
 
             console.log("Sending data:", data);  // Kiểm tra dữ liệu trước khi gửi
