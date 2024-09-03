@@ -44,30 +44,33 @@ def process_json_input(json_string):
         print("Invalid JSON format:", e)
         sys.stdout.flush()
         return None
-def reverse(data):
+def reverse(data,output_file):
+    try:
 
-    architectures = arch_map.get(data['architectures'])
-    mode = mode_map.get(data['mode'])
-    
-    hex_data = ''.join(filter(str.isalnum, data['content']))
-    # Chuyển đổi hex thành chuỗi byte
-    byte_data = bytes.fromhex(hex_data)
-    md = Cs(architectures, mode)
-
-    # Tiến hành dịch ngược
-    disassembled_code = ""
-
-    # Tiến hành dịch ngược và lưu trữ kết quả vào chuỗi
-    for i in md.disasm(byte_data, 0x1000):  # 0x1000 là địa chỉ bắt đầu (tùy chỉnh nếu cần)
-        result = f"0x{i.address:x}:\t{i.mnemonic}\t{i.op_str}\n"
-        disassembled_code += result
-
-    # In ra toàn bộ kết quả
-    print(disassembled_code)
+        architectures = arch_map.get(data['architectures'])
+        mode = mode_map.get(data['mode'])
+        hex_data = ''.join(filter(str.isalnum, data['content']))
+        # Chuyển đổi hex thành chuỗi byte
+        byte_data = bytes.fromhex(hex_data)
+        md = Cs(architectures, mode)
+        # Tiến hành dịch ngược
+        disassembled_code = ""
+        # Tiến hành dịch ngược và lưu trữ kết quả vào chuỗi
+        for i in md.disasm(byte_data, 0x1000):  # 0x1000 là địa chỉ bắt đầu (tùy chỉnh nếu cần)
+            result = f"0x{i.address:x}:\t{i.mnemonic}\t{i.op_str}\n"
+            disassembled_code += result
+        # In ra toàn bộ kết quả
+        print(disassembled_code)
+        with open(output_file, 'w', encoding='utf-8') as file:
+            file.write(disassembled_code)
+    except Exception:
+        print("[-] Error reverse")
 if __name__ == "__main__":
     data1 = sys.stdin.readline()
     data=process_json_input(data1)
     print("Loading Reverse Binary To Assembly ....................")
     sys.stdout.flush()
-    reverse(data)
+    output_file = "output.asm"  # Tên file bạn muốn lưu kết quả
+    reverse(data, output_file)
+    print(f"Resule saved in {output_file}")
     

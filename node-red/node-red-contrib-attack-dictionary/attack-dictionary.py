@@ -65,6 +65,8 @@ def process_json_input(json_string):
 
 #     for thread in threads:
 #         thread.join()
+    
+
 def on_connect(client, userdata, flags, rc):
     # Callback khi client kết nối tới server
     if rc == 0:
@@ -77,12 +79,12 @@ def on_connect(client, userdata, flags, rc):
         print(f"[-] Failed: '{userdata[0]}':'{userdata[1]}'")
         sys.stdout.flush()
 
+
 def mqtt_bruteforce(host, port, user_file, pass_file):
     try:
         with open(user_file, 'r',encoding='utf-8') as uf, open(pass_file, 'r',encoding='utf-8') as pf:
             usernames = [line.strip() for line in uf.readlines()]
             passwords = [line.strip() for line in pf.readlines()]
-    
         for username in usernames:
             for password in passwords:
                 global success
@@ -90,7 +92,6 @@ def mqtt_bruteforce(host, port, user_file, pass_file):
                 client = mqtt.Client(userdata=(username, password))
                 client.username_pw_set(username, password)
                 client.on_connect = on_connect
-
                 try:
                     client.connect(host, port, 60)
                     client.loop_start()
@@ -98,12 +99,13 @@ def mqtt_bruteforce(host, port, user_file, pass_file):
                 except Exception as e:
                     print(f"[!] Connection error: {e}")
                     sys.stdout.flush()
-
                 if success:
                     return
     except Exception as e:
         print("Error Input File")
         sys.stdout.flush()
+
+
 if __name__ == "__main__":
     data = sys.stdin.readline()
     data1 = process_json_input(data)

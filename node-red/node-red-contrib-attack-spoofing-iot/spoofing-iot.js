@@ -11,8 +11,10 @@ module.exports = function(RED) {
             let pyshell = new PythonShell('node_modules/node-red-contrib-attack-spoofing-iot/spoofing-iot.py');
             pyshell.send(jsonPayload);
             pyshell.on('message', function (message) {
+                console.log("Status node", node)
                 console.log("Kiểm tra message",message)
                 node.send({ payload: message });
+                node.warn(message)
             });
             pyshell.end(function (err,code,signal) {
             if (err) throw err;

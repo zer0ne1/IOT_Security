@@ -18,11 +18,9 @@ import re
 def get_all_forms_response(url):
     try:
         chrome_path = r'D:\DriverGoogle\chromedriver-win64\chromedriver.exe'
-        # Tạo một đối tượng WebDriver
         driver = webdriver.Chrome(executable_path=chrome_path)
         driver.get(url)
 
-        # Chờ 5 giây để trang web tải hoàn chỉnh
         time.sleep(5)
         listScripts=[]
         html = driver.page_source
@@ -58,6 +56,7 @@ def get_form_details_response(form):
     details["inputs"] = inputs
     return details
 
+
 def get_form_details_scripts_response(script_content):
     try:
         if(script_content is not None):
@@ -66,7 +65,7 @@ def get_form_details_scripts_response(script_content):
             url_match = re.search(url_pattern, script_content)
             url = url_match.group(1) if url_match else None
 
-            # Sử dụng regex để tìm phương thức HTTP
+         
             method_pattern = r"method: '(.+?)'"
             method_match = re.search(method_pattern, script_content)
             method = method_match.group(1) if method_match else None
@@ -80,8 +79,8 @@ def get_form_details_scripts_response(script_content):
             return None
     except Exception as e:
         print("Error ", e) 
+
 def submit_form_response(form_details, url, value, scrip_details):
-    #set scrip
     try:
         target_url = urljoin(url, form_details["action"])
         # get the inputs
@@ -94,20 +93,15 @@ def submit_form_response(form_details, url, value, scrip_details):
             input_value = input.get("value")
             if input_name and input_value:
                 data[input_name] = input_value
-
-        
         if scrip_details is not None:
             if scrip_details["method"] == "post":
                 return requests.post(scrip_details['url'], data=data)
             else:
-                # GET request
                 return requests.get(scrip_details['url'], params=data)
         else:
             if form_details["method"] == "post":
                 return requests.post(target_url, data=data)
-
             else:
-                # GET request
                 return requests.get(target_url, params=data)
     except Exception as e:
         print("[-] Error", e)
@@ -185,11 +179,11 @@ def get_all_forms(url):
         print("[-] Error getting forms:", e)
         sys.stdout.flush()
         return [], [], None
+    
+
 def submit_form_New(driver, js_script):
     try:
-        # Chờ 5 giây để trang web tải hoàn chỉnh
         time.sleep(5)
-        # Xác định phần tử form trên trang
         form_elements = driver.find_elements(By.XPATH, "//form")
         for form in form_elements:
             inputs = form.find_elements(By.TAG_NAME, "input")
@@ -197,18 +191,16 @@ def submit_form_New(driver, js_script):
                 input_type = input_tag.get_attribute("type")
                 input_name = input_tag.get_attribute("name")
                 if input_type == "text" or input_type == "search":
-                    input_tag.send_keys(js_script)  # Nhập payload vào trường input
-            form.submit()  # Gửi form
-            time.sleep(10)  # Chờ trang tải lại
+                    input_tag.send_keys(js_script)  
+            form.submit()  
+            time.sleep(10)  
             try:
-                # Kiểm tra nếu có alert xuất hiện
                 WebDriverWait(driver, 10).until(EC.alert_is_present())
                 alert = Alert(driver)
                 alert_text = alert.text
-                alert.accept()  # Đóng alert
+                alert.accept()  
                 return True
             except Exception as e:
-                # Không có alert xuất hiện
                 return None
     except Exception as e:
         return None
@@ -257,7 +249,7 @@ def scan_xss(url):
                 is_vulnerable=True
                 continue
             else :
-                print(f"[+] Not Found Xss on {url} By Script [+] {js_script} [+]")
+                print(f"[-] Not Found Xss on {url} By Script [ {js_script} ]")
                 sys.stdout.flush()
         if not is_vulnerable:
             print(f"[-] Not Found XSS on {url}")

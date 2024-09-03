@@ -34,6 +34,7 @@ module.exports = function(RED) {
             console.log("alo123",jsonPayload)
             pyshell.on('message', function (message) {
                 node.send({ payload: message });
+                node.warn(message)
             });
 
             pyshell.end(function (err, code, signal) {

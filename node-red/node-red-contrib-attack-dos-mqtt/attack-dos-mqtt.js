@@ -14,6 +14,7 @@ module.exports = function(RED) {
                 console.log(message)
                 
                 node.send({ payload: message });
+                node.warn(message)
             });
             pyshell.end(function (err,code,signal) {
             if (err) throw err;

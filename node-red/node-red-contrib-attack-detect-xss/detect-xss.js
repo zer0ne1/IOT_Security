@@ -14,6 +14,7 @@ module.exports = function(RED) {
             pyshell.on('message', function (message) {
                 console.log("Kiêm rtra ", message)
                 node.send({ payload: message });
+                node.warn(message)
             });
             pyshell.end(function (err,code,signal) {
             if (err) throw err;

@@ -1,8 +1,11 @@
 {
-    "name" : "node-red-contrib-attack-dos-mqtt",
-    "node-red" : {
+    "name": "node-red-contrib-attack-dos-mqtt",
+    "node-red": {
         "nodes": {
             "Dos-MQTT": "attack-dos-mqtt.js"
         }
+    },
+    "dependencies": {
+        "node-red-contrib-attack-dos-mqtt": "file:"
     }
 }
