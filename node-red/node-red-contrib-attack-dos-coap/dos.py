@@ -44,7 +44,6 @@ def DOS_CoAP(ip, port, times, threads, max_requests):
                 except:
                     print("[!] Error!!!")
                     sys.stdout.flush()
-        
         for y in range(threads):
             th = threading.Thread(target=run)
             th.start()

