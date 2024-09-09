@@ -1,0 +1,11 @@
+{
+    "name": "node-red-contrib-attack-spoofing-new",
+    "node-red": {
+        "nodes": {
+            "spoofing-IOT": "spoofing-new.js"
+        }
+    },
+    "dependencies": {
+        "node-red-contrib-attack-spoofing-new": "file:"
+    }
+}
