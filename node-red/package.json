@@ -128,6 +128,7 @@
         "node-red-contrib-attack-dos-mqtt": "file:./node-red-contrib-attack-dos-mqtt",
         "node-red-contrib-attack-reverse-binary": "file:./node-red-contrib-attack-reverse-binary",
         "node-red-contrib-attack-spoofing-iot": "file:./node-red-contrib-attack-spoofing-iot",
+        "node-red-contrib-attack-spoofing-new": "file:./node-red-contrib-attack-spoofing-new",
         "node-red-contrib-select-flows": "file:./node-red-contrib-select-flows",
         "node-red-contrib-set-slave": "file:./node-red-contrib-set-slave",
         "node-red-node-test-helper": "^0.3.2",

@@ -1,0 +1,81 @@
+<script type="text/javascript">
+    function sendData() {
+        const ipserver = document.getElementById('ipserver').value;
+        const port = document.getElementById('port').value;
+        const time = document.getElementById('time').value;
+        const fileInput = document.getElementById('file');
+        const formData = new FormData();
+        formData.append('ipserver', ipserver);
+        formData.append('port', port);
+        formData.append('time', time);
+        if (fileInput.files.length > 0) {
+            formData.append('file', fileInput.files[0]);
+        }
+        console.log("Sending data:",  formData.getAll("file"));  // Kiểm tra dữ liệu trước khi gửi
+        // Gửi dữ liệu đến Node-RED thông qua sự kiện
+        fetch('spoofing-new', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Data sent successfully');
+            } else {
+                console.error('Error sending data:', response.statusText);
+            }
+        })
+        .catch(error => {
+            console.error('Error sending data:', error);
+        });
+    }
+</script>
+
+<script type="text/html" data-template-name="spoofing-new">
+    <style>
+        .btn {
+            background-color: cornflowerblue;
+            cursor: pointer;
+            border-radius: 5px;
+            padding: 5px 25px 5px 25px;
+            float: right;
+            color: #fff;
+        }
+    </style>
+    <div class="form-row">
+        <label for="ipserver"><i class="fa fa-tag"></i> Ip Server</label>
+        <input type="text" id="ipserver" placeholder="Ip Server">
+    </div>
+    <div class="form-row">
+        <label for="port"><i class="fa fa-tag"></i> Port</label>
+        <input type="number" id="port" placeholder="Port">
+    </div>
+    <div class="form-row">
+        <label for="time"><i class="fa fa-tag"></i> Attack Time(s)</label>
+        <input type="number" id="time" placeholder="Time(s)">
+    </div>
+    <div class="form-row">
+        <label for="file"><i class="fa fa-tag"></i> Upload File</label>
+        <input type="file" id="file">
+    </div>
+    <button class="btn" onclick="sendData()">Start</button>
+</script>
+
+<script type="text/html" data-help-name="spoofing-new">
+    <p>A simple node that converts the message payloads into all lower-case characters</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('spoofing-new', {
+        category: 'function',
+        color: 'red',
+        defaults: {
+            name: { value: "" }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "alert.svg",
+        label: function () {
+            return this.name || "SPOOFING NEW";
+        }
+    });
+</script>
