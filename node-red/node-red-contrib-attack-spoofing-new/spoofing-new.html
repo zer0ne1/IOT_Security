@@ -1,32 +1,54 @@
 <script type="text/javascript">
+    function showLoading() {
+        var parent = document.getElementById('dialog-form');
+        parent.classList.add('loading-overlay');
+    }
+
+    function hideLoading() {
+        var parent = document.getElementById('dialog-form');
+        parent.classList.remove('loading-overlay');
+    }
+
     function sendData() {
-        const ipserver = document.getElementById('ipserver').value;
-        const port = document.getElementById('port').value;
-        const time = document.getElementById('time').value;
-        const fileInput = document.getElementById('file');
-        const formData = new FormData();
-        formData.append('ipserver', ipserver);
-        formData.append('port', port);
-        formData.append('time', time);
-        if (fileInput.files.length > 0) {
-            formData.append('file', fileInput.files[0]);
-        }
-        console.log("Sending data:",  formData.getAll("file"));  // Kiểm tra dữ liệu trước khi gửi
-        // Gửi dữ liệu đến Node-RED thông qua sự kiện
-        fetch('spoofing-new', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => {
-            if (response.ok) {
-                console.log('Data sent successfully');
-            } else {
-                console.error('Error sending data:', response.statusText);
+        try {
+            showLoading();
+            const ipserver = document.getElementById('ipserver').value;
+            const port = document.getElementById('port').value;
+            const time = document.getElementById('time').value;
+            const fileInput = document.getElementById('file');
+            const formData = new FormData();
+            formData.append('ipserver', ipserver);
+            formData.append('port', port);
+            formData.append('time', time);
+            if (fileInput.files.length > 0) {
+                formData.append('file', fileInput.files[0]);
             }
-        })
-        .catch(error => {
-            console.error('Error sending data:', error);
-        });
+            console.log("Sending data:", formData.getAll("file"));  // Kiểm tra dữ liệu trước khi gửi
+            // Gửi dữ liệu đến Node-RED thông qua sự kiện
+            fetch('spoofing-new', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Data sent successfully');
+                    } else {
+                        console.error('Error sending data:', response.statusText);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending data:', error);
+                });
+        }
+        catch (err) {
+            console.log(err)
+        }
+        finally {
+            // Giả lập một quá trình loading (chờ 3 giây rồi tắt hiệu ứng loading)
+            setTimeout(function () {
+                hideLoading();
+            }, 1500);
+        }
     }
 </script>
 
@@ -79,3 +101,34 @@
         }
     });
 </script>
+
+<style>
+    /* Hiệu ứng loading */
+    .loading-overlay {
+        position: relative;
+    }
+
+    .loading-overlay::before {
+        content: "Loading...";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        z-index: 1000;
+    }
+
+    .loading-overlay::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        z-index: 999;
+    }
+</style>
