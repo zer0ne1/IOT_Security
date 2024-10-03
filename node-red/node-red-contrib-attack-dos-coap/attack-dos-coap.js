@@ -27,3 +27,4 @@ module.exports = function(RED) {
     }
     RED.nodes.registerType("attack-dos-coap", AttackDOSCoAP);
 }
+

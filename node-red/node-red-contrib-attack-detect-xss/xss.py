@@ -10,6 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service 
 from bs4 import BeautifulSoup
 import re
 
@@ -17,8 +18,9 @@ import re
 
 def get_all_forms_response(url):
     try:
-        chrome_path = r'D:\DriverGoogle\chromedriver-win64\chromedriver.exe'
-        driver = webdriver.Chrome(executable_path=chrome_path)
+        chrome_path = r'/home/kali/Downloads/chromedriver-linux64/chromedriver'
+        service = Service(chrome_path)  
+        driver = webdriver.Chrome(service=service)
         driver.get(url)
 
         time.sleep(5)
@@ -166,8 +168,9 @@ def get_all_forms(url):
     Tải trang và trả về tất cả các form và script trên trang.
     """
     try:
-        chrome_path = r'D:\DriverGoogle\chromedriver-win64\chromedriver.exe'
-        driver = webdriver.Chrome(executable_path=chrome_path)
+        chrome_path = r'/home/kali/Downloads/chromedriver-linux64/chromedriver'
+        service = Service(chrome_path)  
+        driver = webdriver.Chrome(service=service)
         driver.get(url)
         # Chờ 5 giây để trang web tải hoàn chỉnh
         time.sleep(5)

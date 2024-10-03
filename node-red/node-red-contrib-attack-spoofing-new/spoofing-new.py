@@ -18,7 +18,7 @@ def All(packets, ipserver, port,timeReal):
             return False
 
         def extract_alphanumeric(input_string):
-            alphanumeric_only = re.sub(r'[^a-zA-Z0-9]', '', input_string)
+            alphanumeric_only = re.sub(r'[^a-zA-Z0-9-]', '', input_string)
             return alphanumeric_only
 
         temp_info = {}
