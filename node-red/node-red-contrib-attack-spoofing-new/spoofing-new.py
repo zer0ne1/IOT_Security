@@ -74,6 +74,7 @@ def All(packets, ipserver, port,timeReal):
                 if rc == 0:
                     # client.subscribe(Topic)  # Đăng ký vào chủ đề khi kết nối thành công
                     print(f"Connected to MQTT broker. Subscribed to topic: {Topic}")
+                    sys.stdout.flush()
                 else:
                     print("Connection failed")
                     sys.stdout.flush()
@@ -98,6 +99,7 @@ def All(packets, ipserver, port,timeReal):
                 json_message = json.dumps(json_data)
                 client.publish(Topic, json_message)
                 print(f"Published message: {json_message}")
+                sys.stdout.flush()
                 i += 1
                 time.sleep(5)  # Gửi thông điệp mỗi 5 giây
               # Thay vì loop_forever, sử dụng loop_start để chạy client MQTT song song
