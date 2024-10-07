@@ -21,7 +21,8 @@ def main(_broker_address, _port, request, username=None, password=None):
         sys.stdout.flush()
 
         for i in tqdm(range(int(request))):
-            client = mqtt.Client(f'client{i}')  # Tạo mới client
+            # client = mqtt_client.Client(mqtt_client.CallbackAPIVersion.VERSION1, client_id)
+            client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1,f'client{i}')  # Tạo mới client
             
             # Nếu username và password được cung cấp, thiết lập thông tin đăng nhập
             if username and password:

@@ -16,6 +16,7 @@ module.exports = function(RED) {
                     msg.payload= data.flow
                     console.log("Kiểm tra be",data )
                     node.send(msg);
+                    node.warn(msg)
                 })
 
                 

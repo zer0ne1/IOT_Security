@@ -1,5 +1,6 @@
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
+        console.log("okee")
         // Initialize mode options based on the default selected architecture
         updateModeOptions();
 
@@ -9,9 +10,7 @@
 
     function updateModeOptions() {
         const architecture = document.getElementById("architectures").value;
-        console.log("architecture", architecture);
         const modeSelect = document.getElementById("mode");
-        console.log("modeSelect", modeSelect);
 
         const modes = {
             "CS_ARCH_X86": ["CS_MODE_64", "CS_MODE_32", "CS_MODE_16"],
@@ -33,63 +32,11 @@
                 let option = document.createElement("option");
                 option.value = mode;
                 option.text = mode;
-                modeSelect.add(option);
+                modeSelect.appendChild(option);
             });
         }
     }
-    function showLoading() {
-        var parent = document.getElementById('dialog-form');
-        parent.classList.add('loading-overlay');
-    }
 
-    function hideLoading() {
-        var parent = document.getElementById('dialog-form');
-        parent.classList.remove('loading-overlay');
-    }
-
-    function sendData() {
-        try {
-            showLoading();
-            const architectures = document.getElementById('architectures').value;
-            const mode = document.getElementById('mode').value;
-            const fileInput = document.getElementById('file');
-
-            const formData = new FormData();
-            formData.append('architectures', architectures);
-            formData.append('mode', mode);
-            if (fileInput.files.length > 0) {
-                formData.append('file', fileInput.files[0]);
-            }
-
-            console.log("Sending data:", formData.getAll("architectures"), formData.getAll("mode"), formData.getAll("file"));  // Kiểm tra dữ liệu trước khi gửi
-
-            // Gửi dữ liệu đến Node-RED thông qua sự kiện
-            fetch('reverse-binary', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => {
-                    if (response.ok) {
-                        console.log('Data sent successfully');
-                    } else {
-                        console.error('Error sending data:', response.statusText);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error sending data:', error);
-                });
-        }
-        catch (err) {
-            console.log(err)
-        }
-        finally {
-            // Giả lập một quá trình loading (chờ 3 giây rồi tắt hiệu ứng loading)
-            setTimeout(function () {
-                hideLoading();
-            }, 1500);
-        }
-        
-    }
 </script>
 
 <script type="text/html" data-template-name="attack-reverse-binary">
@@ -105,7 +52,7 @@
     </style>
     <div class="form-row">
         <label for="architectures"><i class="fa fa-tag"></i> Architecture</label>
-        <select id="architectures">
+        <select id="architectures" onchange="updateModeOptions()">
             <option value="CS_ARCH_X86">x86</option>
             <option value="CS_ARCH_ARM">ARM</option>
             <option value="CS_ARCH_ARM64">ARM64</option>
@@ -126,9 +73,69 @@
     </div>
     <div class="form-row">
         <label for="file"><i class="fa fa-tag"></i> Upload File</label>
-        <input type="file" id="file">
+        <input type="file" id="fileBinary">
     </div>
     <button class="btn" onclick="sendData()">Start</button>
+
+    <script>
+        function showLoading() {
+            var parent = document.getElementById('dialog-form');
+            parent.classList.add('loading-overlay');
+        }
+
+        function hideLoading() {
+            var parent = document.getElementById('dialog-form');
+            parent.classList.remove('loading-overlay');
+        }
+
+        function sendData() {
+            console.log("okee")
+            try {
+                showLoading();
+
+                const architecture = document.getElementById("architectures").value;
+                console.log("architecture", architecture);
+                const modeSelect = document.getElementById("mode").value;
+                console.log("modeSelect", modeSelect);
+                const fileInput = document.getElementById('fileBinary');
+
+                const formData = new FormData();
+                formData.append('architectures', architecture);
+                formData.append('mode', modeSelect);
+                if (fileInput.files.length > 0) {
+                    formData.append('file', fileInput.files[0]);
+                }
+
+                console.log("Sending data:", formData.getAll("architectures"), formData.getAll("mode"), formData.getAll("file"));  // Kiểm tra dữ liệu trước khi gửi
+
+                // Gửi dữ liệu đến Node-RED thông qua sự kiện
+                fetch('reverse-binary', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('Data sent successfully');
+                        } else {
+                            console.error('Error sending data:', response.statusText);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error sending data:', error);
+                    });
+            }
+            catch (err) {
+                console.log(err)
+            }
+            finally {
+                // Giả lập một quá trình loading (chờ 3 giây rồi tắt hiệu ứng loading)
+                setTimeout(function () {
+                    hideLoading();
+                }, 1500);
+            }
+
+        }
+    </script>
 </script>
 
 <script type="text/html" data-help-name="attack-reverse-binary">

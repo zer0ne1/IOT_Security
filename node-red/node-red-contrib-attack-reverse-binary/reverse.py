@@ -72,7 +72,8 @@ if __name__ == "__main__":
     data=process_json_input(data1)
     print("Loading Reverse Binary To Assembly ....................")
     sys.stdout.flush()
-    output_file = "output.asm"  # Tên file bạn muốn lưu kết quả
+    output_file = "/home/tung/code/29/output.asm"  # Tên file bạn muốn lưu kết quả
     reverse(data, output_file)
-    print(f"Resule saved in {output_file}")
+    new_path = output_file.replace("/home/tung/code/29", "/static")
+    print(f"Resule saved in {new_path}")
     
